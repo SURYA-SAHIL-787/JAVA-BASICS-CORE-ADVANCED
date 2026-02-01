@@ -1,0 +1,423 @@
+####################################################################################################
+#                                                                                                  #
+#                                      J A V A   A R R A Y S                                       #
+#                                                                                                  #
+####################################################################################################
+
+JAVA ARRAYS
+|
++==================================================================================================+
+|  A) CORE FOUNDATIONS (WHAT ARRAYS REALLY ARE)                                                    |
++==================================================================================================+
+|  |
+|  +-- A1) DEFINITION (THE FORMAL IDEA)
+|  |   |
+|  |   +-- ARRAY = FIXED-SIZE, INDEXED COLLECTION OF SAME TYPE ELEMENTS
+|  |   +-- INDEX RANGE: 0  TO  (N - 1)
+|  |   +-- LENGTH PROPERTY: array.length   (FIELD, NOT METHOD)
+|  |   +-- RANDOM ACCESS: O(1) BY INDEX
+|  |
+|  +-- A2) MEMORY MODEL (INTERVIEW-LEVEL UNDERSTANDING)
+|  |   |
+|  |   +-- ARRAY IS AN OBJECT (REFERENCE TYPE)
+|  |   +-- ARRAY DATA LIVES ON HEAP
+|  |   +-- REFERENCE VARIABLE LIVES ON STACK (LOCAL VAR)
+|  |   +-- PRIMITIVE ARRAY STORES VALUES DIRECTLY
+|  |   +-- OBJECT ARRAY STORES REFERENCES (POINTERS) TO OBJECTS
+|  |   |
+|  |   +-- DEFAULT VALUES (AUTO-FILL ON CREATION)
+|  |       |
+|  |       +-- byte/short/int/long      -> 0
+|  |       +-- float/double             -> 0.0
+|  |       +-- char                     -> '\u0000'
+|  |       +-- boolean                  -> false
+|  |       +-- reference types           -> null
+|  |
+|  +-- A3) HARD RULES (NO EXCUSES)
+|  |   |
+|  |   +-- FIXED SIZE (CANNOT RESIZE)
+|  |   +-- HOMOGENEOUS TYPE (ONE TYPE ONLY)
+|  |   +-- OUT OF RANGE -> ArrayIndexOutOfBoundsException
+|  |   +-- null ARRAY REF -> NullPointerException
+|  |   +-- NEGATIVE SIZE -> NegativeArraySizeException
+|  |   +-- COPYING / ASSIGNMENT CAN CREATE ALIASING BUGS
+|  |
+|  +-- A4) BIG-O REALITY (PERFORMANCE VIEW)
+|      |
+|      +-- ACCESS a[i]                       -> O(1)
+|      +-- UPDATE a[i]                       -> O(1)
+|      +-- TRAVERSE FULL ARRAY               -> O(n)
+|      +-- SEARCH (LINEAR)                   -> O(n)
+|      +-- INSERT/DELETE IN MIDDLE (SHIFT)   -> O(n)
+|      +-- SORT (TYPICAL)                    -> O(n log n)
+|
++==================================================================================================+
+|  B) SYNTAX MASTERY (DECLARATION / CREATION / INITIALIZATION)                                     |
++==================================================================================================+
+|  |
+|  +-- B1) DECLARE (TYPE + NAME)
+|  |   |
+|  |   +-- int[] a;
+|  |   +-- int a[];      (VALID BUT AVOID)
+|  |
+|  +-- B2) CREATE (ALLOCATE)
+|  |   |
+|  |   +-- a = new int[SIZE];
+|  |   +-- SIZE IS int AND MUST BE >= 0
+|  |
+|  +-- B3) INITIALIZE (PUT VALUES)
+|  |   |
+|  |   +-- a[i] = value;
+|  |
+|  +-- B4) ONE-LINERS (MOST COMMON)
+|  |   |
+|  |   +-- int[] a = new int[5];
+|  |   +-- int[] a = {10, 20, 30};
+|  |   +-- int[] a = new int[] {10, 20, 30};
+|  |
+|  +-- B5) IMPORTANT TYPE FORMS
+|      |
+|      +-- PRIMITIVE ARRAYS: int[], double[], char[], boolean[]
+|      +-- OBJECT ARRAYS   : String[], Integer[], Student[]
+|      +-- MULTI-DIM       : int[][], int[][][], ...
+|
++==================================================================================================+
+|  C) ACCESS + TRAVERSAL (ALL WAYS, ALL CASES)                                                     |
++==================================================================================================+
+|  |
+|  +-- C1) ACCESS (READ/WRITE)
+|  |   |
+|  |   +-- READ : x = a[i];
+|  |   +-- WRITE: a[i] = x;
+|  |
+|  +-- C2) TRAVERSAL PATTERNS
+|  |   |
+|  |   +-- INDEXED FOR (WHEN INDEX MATTERS)
+|  |   |   |
+|  |   |   +-- for (int i=0; i<a.length; i++)
+|  |   |
+|  |   +-- REVERSE TRAVERSAL
+|  |   |   |
+|  |   |   +-- for (int i=a.length-1; i>=0; i--)
+|  |   |
+|  |   +-- FOR-EACH (WHEN ONLY VALUES MATTER)
+|  |   |   |
+|  |   |   +-- for (int x : a)
+|  |   |   +-- LIMITATION: CAN'T GET INDEX DIRECTLY
+|  |   |
+|  |   +-- WHILE / DO-WHILE (SENTINEL STYLE)
+|  |   |
+|  |   +-- TWO-POINTER WALK (LEFT/RIGHT)
+|  |       |
+|  |       +-- i++ , j-- STYLE
+|  |
+|  +-- C3) PRINTING / DISPLAY (CLEAN OUTPUT)
+|      |
+|      +-- Arrays.toString(a)          (1D)
+|      +-- Arrays.deepToString(m)      (2D+)
+|      +-- MANUAL PRINT (FORMAT CONTROL)
+|
++==================================================================================================+
+|  D) CORE COMPUTATIONS (MUST BE AUTOMATIC)                                                        |
++==================================================================================================+
+|  |
+|  +-- D1) AGGREGATES
+|  |   |
+|  |   +-- SUM
+|  |   +-- PRODUCT
+|  |   +-- COUNT (EVEN/ODD/POS/NEG/ZEROS)
+|  |   +-- AVERAGE (WATCH INT DIVISION)
+|  |
+|  +-- D2) EXTREMES
+|  |   |
+|  |   +-- MIN / MAX
+|  |   +-- SECOND MIN / SECOND MAX
+|  |   +-- KTH MIN / KTH MAX (BASIC IDEA)
+|  |
+|  +-- D3) FREQUENCY / OCCURRENCE
+|  |   |
+|  |   +-- COUNT OCCURRENCES OF X
+|  |   +-- FIRST OCCURRENCE INDEX
+|  |   +-- LAST OCCURRENCE INDEX
+|  |   +-- ALL OCCURRENCE INDICES
+|  |
+|  +-- D4) PREFIX / RUNNING TECHNIQUES (PRO LEVEL)
+|      |
+|      +-- PREFIX SUM ARRAY (FAST RANGE SUM QUERIES)
+|      +-- RUNNING MAX / RUNNING MIN
+|      +-- DIFFERENCE ARRAY IDEA (ADVANCED RANGE UPDATES)
+|
++==================================================================================================+
+|  E) SEARCHING (EVERY VERSION YOU NEED)                                                           |
++==================================================================================================+
+|  |
+|  +-- E1) LINEAR SEARCH (WORKS ON ANY ARRAY)
+|  |   |
+|  |   +-- FOUND / NOT FOUND FLAG
+|  |   +-- FIRST MATCH / LAST MATCH
+|  |   +-- COUNT MATCHES
+|  |
+|  +-- E2) BINARY SEARCH (ONLY IF SORTED)
+|  |   |
+|  |   +-- Arrays.binarySearch(a, key)
+|  |   +-- MANUAL BINARY SEARCH (LOW/MID/HIGH)
+|  |
+|  +-- E3) SEARCH PATTERNS (INTERVIEW CLASSICS)
+|      |
+|      +-- SEARCH IN ROTATED SORTED ARRAY (CONCEPT)
+|      +-- TWO-SUM (PAIR SUM) (CONCEPT)
+|
++==================================================================================================+
+|  F) TRANSFORMATIONS (REVERSE / ROTATE / SHIFT / PARTITION)                                       |
++==================================================================================================+
+|  |
+|  +-- F1) REVERSE
+|  |   |
+|  |   +-- IN-PLACE (TWO POINTER SWAP)
+|  |   +-- USING EXTRA ARRAY (COPY)
+|  |
+|  +-- F2) ROTATION (K STEPS)
+|  |   |
+|  |   +-- LEFT ROTATE BY K
+|  |   +-- RIGHT ROTATE BY K
+|  |   +-- K MOD N RULE
+|  |   +-- METHODS
+|  |       |
+|  |       +-- TEMP ARRAY METHOD
+|  |       +-- REVERSAL ALGORITHM (PRO METHOD)
+|  |
+|  +-- F3) SHIFTING (ARRAY INSERT/DELETE CORE)
+|  |   |
+|  |   +-- SHIFT RIGHT (FOR INSERT)
+|  |   +-- SHIFT LEFT  (FOR DELETE)
+|  |
+|  +-- F4) PARTITIONING (GROUPING)
+|      |
+|      +-- EVENS LEFT / ODDS RIGHT
+|      +-- NEGATIVES LEFT / POSITIVES RIGHT
+|      +-- MOVE ZEROS TO END
+|
++==================================================================================================+
+|  G) INSERTION / DELETION (ARRAYS ARE MANUAL)                                                     |
++==================================================================================================+
+|  |
+|  +-- G1) INSERT
+|  |   |
+|  |   +-- AT START
+|  |   +-- AT END
+|  |   +-- AT INDEX i (SHIFT RIGHT)
+|  |
+|  +-- G2) DELETE
+|  |   |
+|  |   +-- DELETE AT INDEX (SHIFT LEFT)
+|  |   +-- DELETE VALUE (FIRST / ALL OCCURRENCES)
+|  |   +-- "REMOVE DUPLICATES" (IN SORTED ARRAY) (TWO POINTER)
+|  |
+|  +-- G3) DYNAMIC NEED?
+|      |
+|      +-- IF YOU NEED RESIZE: USE ArrayList (CONCEPT)
+|
++==================================================================================================+
+|  H) SORTING (LOGIC + JAVA BUILT-INS)                                                             |
++==================================================================================================+
+|  |
+|  +-- H1) BASIC SORTS (LOGIC MASTERY)
+|  |   |
+|  |   +-- BUBBLE SORT
+|  |   +-- SELECTION SORT
+|  |   +-- INSERTION SORT
+|  |
+|  +-- H2) ADVANCED SORTING IDEA (AWARENESS)
+|  |   |
+|  |   +-- MERGE SORT (CONCEPT)
+|  |   +-- QUICK SORT (CONCEPT)
+|  |
+|  +-- H3) JAVA SORT (REAL WORLD)
+|      |
+|      +-- Arrays.sort(primitive[])
+|      +-- Arrays.sort(object[], comparator)
+|      +-- STABLE VS UNSTABLE (AWARENESS)
+|
++==================================================================================================+
+|  I) MERGE + SET-LIKE OPS (POWER TOPICS)                                                          |
++==================================================================================================+
+|  |
+|  +-- I1) MERGE ARRAYS
+|  |   |
+|  |   +-- CONCATENATE (APPEND)
+|  |   +-- MERGE TWO SORTED ARRAYS (TWO POINTER)
+|  |
+|  +-- I2) SET-STYLE OPERATIONS (BASIC)
+|      |
+|      +-- UNION (CONCEPT)
+|      +-- INTERSECTION (CONCEPT)
+|      +-- DIFFERENCE (CONCEPT)
+|
++==================================================================================================+
+|  J) MULTI-DIMENSIONAL ARRAYS (2D / 3D / JAGGED)                                                  |
++==================================================================================================+
+|  |
+|  +-- J1) 2D ARRAYS (MATRIX)
+|  |   |
+|  |   +-- DECLARE: int[][] m;
+|  |   +-- CREATE : m = new int[r][c];
+|  |   +-- ACCESS : m[i][j]
+|  |   +-- TRAVERSE: NESTED LOOPS
+|  |   |
+|  |   +-- CORE MATRIX OPS
+|  |       |
+|  |       +-- ROW SUM / COL SUM
+|  |       +-- MAIN DIAGONAL / SECONDARY DIAGONAL
+|  |       +-- TRANSPOSE
+|  |       +-- ADD / SUBTRACT
+|  |       +-- MULTIPLY (BASIC)
+|  |       +-- ROTATE 90 DEG (CONCEPT)
+|  |       +-- SPIRAL PRINT / BOUNDARY PRINT (CONCEPT)
+|  |
+|  +-- J2) JAGGED ARRAYS (ROWS DIFFERENT SIZE)
+|  |   |
+|  |   +-- int[][] jag = new int[rows][];
+|  |   +-- jag[i] = new int[len];
+|  |
+|  +-- J3) 3D ARRAYS (AWARENESS)
+|      |
+|      +-- int[][][] cube
+|
++==================================================================================================+
+|  K) OBJECT ARRAYS (STRING[], STUDENT[], WRAPPER TYPES)                                           |
++==================================================================================================+
+|  |
+|  +-- K1) STRING ARRAYS
+|  |   |
+|  |   +-- TRAVERSAL
+|  |   +-- equals() VS ==
+|  |
+|  +-- K2) ARRAY OF OBJECTS
+|  |   |
+|  |   +-- Student[] students
+|  |   +-- EACH ELEMENT IS A REFERENCE
+|  |
+|  +-- K3) WRAPPER ARRAYS
+|      |
+|      +-- Integer[] VS int[] (AUTOBOXING AWARENESS)
+|
++==================================================================================================+
+|  L) COPYING (SHALLOW/DEEP) + ALIASING (BUG SAVER SECTION)                                        |
++==================================================================================================+
+|  |
+|  +-- L1) ALIASING (REFERENCE TRAP)
+|  |   |
+|  |   +-- b = a  -> BOTH POINT SAME ARRAY
+|  |   +-- EDITING b CHANGES a
+|  |
+|  +-- L2) COPYING METHODS
+|  |   |
+|  |   +-- MANUAL LOOP COPY
+|  |   +-- System.arraycopy(src, sPos, dest, dPos, len)
+|  |   +-- Arrays.copyOf()
+|  |   +-- Arrays.copyOfRange()
+|  |   +-- clone()
+|  |
+|  +-- L3) SHALLOW VS DEEP COPY
+|      |
+|      +-- 1D PRIMITIVES: COPY IS SAFE
+|      +-- OBJECT ARRAYS: COPY COPIES REFERENCES (SHALLOW)
+|      +-- 2D ARRAYS: NEED ROW-BY-ROW COPY FOR TRUE DEEP COPY
+|
++==================================================================================================+
+|  M) ARRAYS + METHODS (PASSING / RETURNING / VARARGS)                                             |
++==================================================================================================+
+|  |
+|  +-- M1) PASS ARRAY TO METHOD
+|  |   |
+|  |   +-- PASS BY VALUE OF REFERENCE (MODIFICATIONS VISIBLE)
+|  |
+|  +-- M2) RETURN ARRAY FROM METHOD
+|  |
+|  +-- M3) VARARGS (int... args)
+|      |
+|      +-- VARARGS IS AN ARRAY INSIDE METHOD
+|
++==================================================================================================+
+|  N) STANDARD LIBRARY POWER (java.util.Arrays + CONVERSIONS)                                      |
++==================================================================================================+
+|  |
+|  +-- N1) java.util.Arrays (MUST KNOW)
+|  |   |
+|  |   +-- toString / deepToString
+|  |   +-- sort
+|  |   +-- binarySearch
+|  |   +-- equals / deepEquals
+|  |   +-- fill
+|  |   +-- copyOf / copyOfRange
+|  |
+|  +-- N2) CONVERSIONS (REAL-WORLD)
+|      |
+|      +-- ARRAY -> LIST
+|      |   |
+|      |   +-- Arrays.asList(Object[])
+|      |
+|      +-- LIST -> ARRAY
+|      |   |
+|      |   +-- list.toArray(new T[0])
+|      |
+|      +-- PRIMITIVE ARRAYS NOTE
+|          |
+|          +-- int[] IS NOT List<Integer> DIRECTLY (NEEDS LOOP/STREAM)
+|
++==================================================================================================+
+|  O) MASTER PATTERNS (TOP 0.1% PROBLEM-SOLVING BLUEPRINTS)                                        |
++==================================================================================================+
+|  |
+|  +-- O1) TWO POINTER
+|  |   |
+|  |   +-- REVERSE IN-PLACE
+|  |   +-- REMOVE DUPLICATES (SORTED)
+|  |   +-- PARTITION (EVEN/ODD, NEG/POS, MOVE ZEROS)
+|  |
+|  +-- O2) SLIDING WINDOW
+|  |   |
+|  |   +-- MAX SUM SUBARRAY SIZE K
+|  |   +-- MIN LENGTH SUBARRAY (CONCEPT)
+|  |
+|  +-- O3) PREFIX SUM
+|  |   |
+|  |   +-- RANGE SUM QUERIES
+|  |   +-- SUBARRAY SUM CHECK (CONCEPT)
+|  |
+|  +-- O4) FREQUENCY COUNTING
+|  |   |
+|  |   +-- USING COUNT ARRAY (WHEN RANGE SMALL)
+|  |   +-- USING MAP (CONCEPT)
+|  |
+|  +-- O5) CYCLIC PLACEMENT IDEAS (AWARENESS)
+|      |
+|      +-- FIND MISSING / DUPLICATE IN 1..N (CONCEPT)
+|
++==================================================================================================+
+|  P) CLASSIC "MUST-SOLVE" ARRAY QUESTIONS (CHECKLIST)                                             |
++==================================================================================================+
+   |
+   +-- P1) BASIC
+   |   |
+   |   +-- SUM / AVG / MIN / MAX
+   |   +-- COUNT EVEN/ODD
+   |   +-- REVERSE
+   |   +-- LINEAR SEARCH
+   |
+   +-- P2) INTERMEDIATE
+   |   |
+   |   +-- SECOND MAX / SECOND MIN
+   |   +-- ROTATE BY K
+   |   +-- MOVE ZEROS TO END
+   |   +-- MERGE TWO SORTED ARRAYS
+   |   +-- REMOVE DUPLICATES (SORTED)
+   |
+   +-- P3) ADVANCED (CONCEPT LEVEL)
+       |
+       +-- MAX SUBARRAY SUM (CONCEPT)
+       +-- TWO SUM (CONCEPT)
+       +-- PREFIX SUM RANGE QUERIES
+       +-- SPIRAL / ROTATE MATRIX (2D)
+
+####################################################################################################
