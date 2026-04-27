@@ -60,6 +60,6 @@ public class GUICalculator extends JFrame implements ActionListener {
         }
     }
     public static void main(String[] args) {
-        new GUICalculator():
+        new GUICalculator();
     }
 }
